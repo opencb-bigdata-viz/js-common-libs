@@ -114,6 +114,7 @@ function TrackSvg(parent, args) {
 		}
 	}
 
+
 	this.position = this.region.center();
 	
 	//flags
@@ -126,7 +127,7 @@ function TrackSvg(parent, args) {
 
 	//diplayed boolean object
 	this.chunksDisplayed = {};
-};
+}
 
 TrackSvg.prototype.setY = function(value){
 	this.y = value;
@@ -217,8 +218,6 @@ TrackSvg.prototype.draw = function(){
 		"width":this.width,
 		"height":this.height
 	});
-	
-
 	
 	var titleGroup = SVG.addChild(main,"g",{
 		"class":"trackTitle"
@@ -1469,7 +1468,7 @@ TrackSvg.prototype._getFeaturesByChunks = function(response, filters){
 	//if(feature.end > region.start && feature.start < region.end){
 
 	//}
-}
+};
 
 TrackSvg.prototype._removeDisplayedChunks = function(response){
 	//Returns an array avoiding already drawn features in this.chunksDisplayed
@@ -1477,8 +1476,7 @@ TrackSvg.prototype._removeDisplayedChunks = function(response){
 	var newChunks = []; 
 	var dataType = response.params.dataType;
 	var chromosome = response.params.chromosome;
-	var features = [];
-	
+
 	var feature, displayed, featureFirstChunk, featureLastChunk, features = [];
 	for ( var i = 0, leni = chunks.length; i < leni; i++) {//loop over chunks
 		if(this.chunksDisplayed[chunks[i].key+dataType] != true){//check if any chunk is already displayed and skip it
@@ -1509,4 +1507,4 @@ TrackSvg.prototype._removeDisplayedChunks = function(response){
 	}
 	response.items = newChunks;
 	return response;
-}
+};

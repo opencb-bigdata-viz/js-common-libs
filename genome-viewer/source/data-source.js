@@ -19,9 +19,10 @@
  * along with JS Common Libs. If not, see <http://www.gnu.org/licenses/>.
  */
 
+//interface
 function DataSource() {
 	
-};
+}
 
 DataSource.prototype.fetch = function(){
 

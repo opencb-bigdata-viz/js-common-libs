@@ -22,7 +22,10 @@
 function CellBaseAdapter(args){
 	this.host = null;
 	this.gzip = true;
-	
+
+    this.filters={};
+    this.options={};
+
 	this.params={};
 	if (args != null){
 		if(args.host != null){

@@ -27,7 +27,7 @@ function FileDataSource(file) {
 	this.file = file;
 	this.success = new Event();
 	this.error = new Event();
-};
+}
 
 FileDataSource.prototype.error = function(){
 	alert("File is too big. Max file size is 100 Mbytes.");

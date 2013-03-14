@@ -431,7 +431,7 @@ UploadWidget.prototype.uploadFile = function()  {
     var objectId = this.opencgaLocation.directory+inputFileName;
     objectId = objectId.replace(new RegExp("/", "gi"),":");
 
-   	fd.append("name", this.nameField.getValue()); 
+   	fd.append("name", this.nameField.getValue());
    	fd.append("fileFormat", this.selectedDataType);
    	fd.append("responsible", this.responsableField.getValue());
    	fd.append("organization", this.organizationField.getValue());

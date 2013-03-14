@@ -44,7 +44,7 @@ function UrlWidget(args){
     }
 	
 	this.onAdd = new Event(this);
-};
+}
 
 UrlWidget.prototype.draw = function (){
 	if(this.panel==null){

@@ -30,7 +30,7 @@ function TrackData(id, args) {
 			this.gzip = args.gzip;
 		}
 	}
-};
+}
 
 TrackData.prototype.retrieveData = function(region){
 	this.adapter.getData(region);

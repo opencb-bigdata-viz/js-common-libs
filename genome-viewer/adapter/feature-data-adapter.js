@@ -80,7 +80,7 @@ FeatureDataAdapter.prototype._fetchData = function(region){
 			this.parse(data,region);
 		}
 	}
-}
+};
 
 FeatureDataAdapter.prototype.addFeatures = function(features){
 		this.featureCache.putFeatures(features, "data");

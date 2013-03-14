@@ -20,6 +20,10 @@
  */
 
 function BamAdapter(args){
+
+    this.filters={};
+    this.options={};
+
     if(typeof args != 'undefined'){
         this.host = args.host || this.host;
         this.category = args.category || this.category;
