@@ -63,7 +63,8 @@ ResultWidget.prototype = {
 		        _this.panel.setLoading(false);
                 var layout = RESULT[_this.job.toolName].layout;
                 layout.outputItems = _this.job.outputData.sort(layout.sortOutputItems);
-		        _this.render(RESULT);
+                _this.render(RESULT);
+
             });
         }else{
             Ext.getCmp(this.targetId).setActiveTab(this.panel);
@@ -88,10 +89,12 @@ ResultWidget.prototype = {
                         switch(item.toolName){
                             case 'pathiways':
                                 var arr = item.commandLine.split(/ --/g);
+                                debugger
                                 var str = arr[2].replace(/ /g,': ')+'<br>';
                                 str +=  arr[5].replace(/ /g,': ').replace('/httpd/bioinfo/opencga/analysis/pathiways/examples/','').replace('/httpd/bioinfo/opencga/accounts/','')+'<br>';
                                 str +=  arr[1].replace(/ /g,': ').replace('/httpd/bioinfo/opencga/analysis/pathiways/examples/','').replace('/httpd/bioinfo/opencga/accounts/','')+'<br>';
                                 str +=  arr[3].replace(/ /g,': ')+'<br>';
+                                str +=  arr[8].replace(/ /g,': ')+'<br>';//disease
                                 str +=  arr[7].replace(/ /g,': ')+'<br>';
 //                                str +=  arr[9].replace(/ /g,': ')+'<br>';
                                 return str;
@@ -238,6 +241,7 @@ ResultWidget.prototype = {
                 if(typeof item.children == 'function'){
                     item.children = item.children();
                 }
+                debugger
                 boxes = [];
                 for(var i = 0; i<item.children.length; i++){
                     boxes.push(getDetailsAsDocument(item.children[i]));
@@ -270,6 +274,7 @@ ResultWidget.prototype = {
                         },detailsItemsContainer]
                     });
                 }else{
+                    if(item==null) debugger
                     return Ext.create('Ext.container.Container', {
                         id:_this.jobId+item.title.replace(/ /g,''),
                         title:item.title,

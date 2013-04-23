@@ -103,7 +103,8 @@ UploadWidget.prototype.draw = function(opencgaLocation){
 		             {text : "Sequence", tag:"sequence"}
 		        ];
 	dataTypes["22"]=[
-		             {text : "Tabbed text file", tag:"txt"}
+		             {text : "Tabbed text file", tag:"txt"},
+		             {text : "CEL compressed file", tag:"cel"}
 		        ];
 	switch (this.suiteId){
 		case 9: this.checkDataTypes(dataTypes["9"]); this.render(dataTypes["9"]); break;
