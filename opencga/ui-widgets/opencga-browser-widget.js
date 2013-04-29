@@ -108,10 +108,10 @@ OpencgaBrowserWidget.prototype = {
                     var pathArr = data.oid.split("/");
                     if(data.fileType == "dir"){
                         data["expanded"]=true;
-                        data["icon"]=Compbio.images.dir;
+                        data["icon"]=Utils.images.dir;
                     }else{
                         data["leaf"]=true;
-                        data["icon"]=Compbio.images.r;
+                        data["icon"]=Utils.images.r;
 					}
 					//console.log(pathArr)
 
@@ -135,8 +135,8 @@ OpencgaBrowserWidget.prototype = {
 					}
 				}
 				folders = JSON.stringify(folders);
-				this.allStore.getRootNode().appendChild({text:this.accountData.buckets[i].name, bucketId:this.accountData.buckets[i].name, oid:"", icon:Compbio.images.bucket, expanded:true, isBucket:true, children:JSON.parse(folders)});
-				this.folderStore.getRootNode().appendChild({text:this.accountData.buckets[i].name, bucketId:this.accountData.buckets[i].name, oid:"", icon:Compbio.images.bucket, expanded:true, isBucket:true, children:JSON.parse(folders)});
+				this.allStore.getRootNode().appendChild({text:this.accountData.buckets[i].name, bucketId:this.accountData.buckets[i].name, oid:"", icon:Utils.images.bucket, expanded:true, isBucket:true, children:JSON.parse(folders)});
+				this.folderStore.getRootNode().appendChild({text:this.accountData.buckets[i].name, bucketId:this.accountData.buckets[i].name, oid:"", icon:Utils.images.bucket, expanded:true, isBucket:true, children:JSON.parse(folders)});
 			}
 		}
 		if(this.selectedTreeNode!=null){ //devuelve el value y el field porque el bucket no tiene oid
@@ -320,15 +320,15 @@ OpencgaBrowserWidget.prototype.render = function (mode){
 				}
 			},
 			columns: [
-				{ text: 'File type', xtype: 'actioncolumn', menuDisabled: true, align: 'center', width:54, icon:Compbio.images.bluebox,
+				{ text: 'File type', xtype: 'actioncolumn', menuDisabled: true, align: 'center', width:54, icon:Utils.images.bluebox,
 					renderer: function(value, metaData, record){
-						this.icon = Compbio.images[record.data.fileType];
+						this.icon = Utils.images[record.data.fileType];
 						this.tooltip = record.data.fileType;
 					}
 				},
 				{ text: 'Name',  dataIndex: 'fileName', flex:2 },
 				{ text: 'Creation time', dataIndex: 'creationTime', flex:1 },
-				{ xtype: 'actioncolumn', menuDisabled: true, align: 'center', tooltip: 'Delete data!', width:30, icon: Compbio.images.del,
+				{ xtype: 'actioncolumn', menuDisabled: true, align: 'center', tooltip: 'Delete data!', width:30, icon: Utils.images.del,
 					handler: function(grid, rowIndex, colIndex, actionItem, event, record, row) {
 						//this also fires itemclick event from tree panel
 						if(record != null){

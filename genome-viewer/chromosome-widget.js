@@ -54,7 +54,7 @@ function ChromosomeWidget(parent, args) {
 ChromosomeWidget.prototype.setWidth = function(width){
 	this.width=width;
 	this.svg.setAttribute("width",width);
-	this.tracksViewedRegion = this.width/Compbio.getPixelBaseByZoom(this.zoom);
+	this.tracksViewedRegion = this.width/Utils.getPixelBaseByZoom(this.zoom);
 	while (this.svg.firstChild) {
 		this.svg.removeChild(this.svg.firstChild);
 	}

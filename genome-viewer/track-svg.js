@@ -811,7 +811,7 @@ TrackSvg.prototype.BamRender = function(response){
 					//t.textContent = diff;
 					//readEls.push(t);
 					var path = SVG.addChild(bamReadGroup,"path",{
-						"d":Compbio.genBamVariants(diff, _this.pixelBase, x, rowY),
+						"d":Utils.genBamVariants(diff, _this.pixelBase, x, rowY),
 						"fill":variantColor
 					});
 					readEls.push(path);
@@ -929,14 +929,14 @@ TrackSvg.prototype.BamRender = function(response){
 				if(_this.zoom > 95){
 					if(readDiff != null){
 						var readPath = SVG.addChild(bamReadGroup,"path",{
-							"d":Compbio.genBamVariants(readDiff, _this.pixelBase, readX, rowY),
+							"d":Utils.genBamVariants(readDiff, _this.pixelBase, readX, rowY),
 							"fill":variantColor
 						});
 						readEls.push(readPath);
 					}
 					if(mateDiff != null){
 						var matePath = SVG.addChild(bamReadGroup,"path",{
-							"d":Compbio.genBamVariants(mateDiff, _this.pixelBase, mateX, rowY),
+							"d":Utils.genBamVariants(mateDiff, _this.pixelBase, mateX, rowY),
 							"fill":variantColor
 						});
 						mateEls.push(matePath);
