@@ -65,6 +65,24 @@ var Utils = {
 	parseDate : function(strDate){
 		return strDate.substring(0,4)+" "+strDate.substring(4,6)+" "+strDate.substring(6,8)+", "+strDate.substring(8,10)+":"+strDate.substring(10,12)+":"+strDate.substring(12,14);
 	},
+    genId:function(prefix){
+        prefix = prefix || '';
+        prefix = prefix.length == 0 ? prefix : prefix+'-';
+        return prefix+this.randomString();
+    },
+    randomString : function(length) {
+        length = length || 10;
+        var str = "";
+        for (var i = 0; i < length; i++) {
+            str+= this.characters.charAt(this.getRandomInt(0,this.characters.length-1));
+        }
+        return str;
+    },
+    getRandomInt : function(min, max) {
+        // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Math/random
+        // Using Math.round() will give you a non-uniform distribution!
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
 	test : function(){
 		return this;
 	}
