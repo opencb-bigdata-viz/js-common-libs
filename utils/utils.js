@@ -20,6 +20,9 @@
  */
 
 var Utils = {
+    //properties
+    characters:"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    
 	formatNumber : function(position){
 		return position.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 	},
