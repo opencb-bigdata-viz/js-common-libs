@@ -27,7 +27,9 @@ function OpencgaBrowserWidget(args){
 		this.width = args.width || this.width;
 		this.height = args.height || this.height;
 	}
-    
+
+    this.allowedTypes = null;
+
     this.adapter = new OpencgaManager();
 	this.adapter.onCreateBucket.addEventListener(function (sender, data){
 		if(data.indexOf("ERROR") != -1) {
@@ -98,8 +100,10 @@ OpencgaBrowserWidget.prototype = {
 				var folders = [];
 				for ( var j = 0; j < this.accountData.buckets[i].objects.length; j++) {
 					var data = this.accountData.buckets[i].objects[j];
+
 					data["bucketId"]=this.accountData.buckets[i].id;
 					//sencha uses id so need to rename to oid, update: sencha can use id but dosent like char '/' on the id string
+
 
 					if(data.id != null){
 						data["oid"] = data.id;
@@ -144,8 +148,10 @@ OpencgaBrowserWidget.prototype = {
 			if(lastNode!=null){
 				var childs = [];
 				lastNode.eachChild(function(n){
-					childs.push(n.raw);
-				});
+                    if(_this.checkTags(n.raw.fileFormat)){
+                        childs.push(n.raw);
+                    }
+                });
 				_this.filesGrid.setTitle(lastNode.getPath("text"," / "));
 				_this.filesStore.loadData(childs);
 			}
@@ -168,7 +174,7 @@ OpencgaBrowserWidget.prototype.render = function (mode){
 			listeners:{
 				beforeappend:function(este, node){
 					if(node.isLeaf()){
-						console.log(node.raw.oid+ " is a file" );
+//						console.log(node.raw.oid+ " is a file" );
 						return false; //cancel append because is leaf
 					}
 				}
@@ -186,7 +192,6 @@ OpencgaBrowserWidget.prototype.render = function (mode){
 			fields:['oid', 'fileBioType', 'fileType', 'fileFormat', 'fileName','multiple','diskUsage','creationTime','responsible','organization','date','description','status','statusMessage','members'],
 			data:[]
 		});
-
 
 		this.folderTree = Ext.create('Ext.tree.Panel', {
 			//xtype:"treepanel",
@@ -241,7 +246,9 @@ OpencgaBrowserWidget.prototype.render = function (mode){
 					var childs = [];
 					_this.selectedTreeNode = {value:node.data[field],field:field};
 					node.eachChild(function(n){
-						childs.push(n.raw);
+                        if(_this.checkTags(n.raw.fileFormat)){
+						    childs.push(n.raw);
+                        }
 					});
                     _this.filesGrid.setTitle(node.getPath("text"," / "));
                     _this.filesStore.loadData(childs);
@@ -370,6 +377,8 @@ OpencgaBrowserWidget.prototype.render = function (mode){
 			 disabled:true,
 			 handler: function(){
                  _this.onSelect.notify({id:_this.lastSelectedNode.oid,bucketId: _this.lastSelectedNode.bucketId});
+                 _this.onSelect = new Event();
+                 _this.allowedTypes = null;
                 _this.panel.close();
 	       	}
 		});
@@ -418,7 +427,11 @@ OpencgaBrowserWidget.prototype.render = function (mode){
 		    items: [panAccordion,this.filesGrid],
 		    buttonAlign:'right',
 		    buttons:[
-		             { text: 'Close', handler: function(){_this.panel.close();}},
+		             { text: 'Close', handler: function(){
+                         _this.onSelect = new Event();
+                         _this.allowedTypes = null;
+                         _this.panel.close();
+                     }},
 		             this.selectButton
 		             ],
 		    listeners: {
@@ -468,9 +481,13 @@ OpencgaBrowserWidget.prototype.setFilter = function (){
 };
 
 OpencgaBrowserWidget.prototype.checkTags = function(tags){
-	for(var i = 0; i < this.tags.length ; i++){
-		if (this.tags[i].indexOf('|')>-1){
-			var orTags = this.tags[i].split('|');
+    if(this.allowedTypes == null){
+        return true;
+    }
+
+	for(var i = 0; i < this.allowedTypes.length ; i++){
+		if (this.allowedTypes[i].indexOf('|')>-1){
+			var orTags = this.allowedTypes[i].split('|');
 			var orMatch = false;
 			for(var j = 0; j < orTags.length ; j++){
 				if (tags.indexOf(orTags[j]) >-1){
@@ -481,7 +498,7 @@ OpencgaBrowserWidget.prototype.checkTags = function(tags){
 				return false;
 			}
 		}else{
-			if (tags.indexOf(this.tags[i])==-1){
+			if (tags.indexOf(this.allowedTypes[i])==-1){
 				return false;
 			}
 		}

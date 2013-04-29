@@ -103,8 +103,18 @@ UploadWidget.prototype.draw = function(opencgaLocation){
 		             {text : "Sequence", tag:"sequence"}
 		        ];
 	dataTypes["22"]=[
-		             {text : "Tabbed text file", tag:"txt"},
-		             {text : "CEL compressed file", tag:"cel"}
+		             {text : "Tabbed text file", tag:"txt",
+                         validate:function(filename){
+                             var regex= /^.*\.(txt|text|TXT|TEXT)$/;
+                             return regex.test(filename);
+                         }
+                     },
+		             {text : "CEL compressed file", tag:"cel",
+                         validate:function(filename){
+                             var regex= /^.*\.(zip|ZIP|tar|TAR|tar.gz|TAR.GZ|tgz|TGZ)$/;
+                             return regex.test(filename);
+                         }
+                     }
 		        ];
 	switch (this.suiteId){
 		case 9: this.checkDataTypes(dataTypes["9"]); this.render(dataTypes["9"]); break;
@@ -172,10 +182,12 @@ UploadWidget.prototype.render = function(dataTypes){
 			    	itemclick : function (este,record){
 			    		if(record.data.leaf){
 			    			this.selectedDataType = record.raw.tag;
-			    			this.dataTypeLabel.setText('<span class="info">Type:</span><span class="ok"> OK </span>',false);
+			    			this.selectedDataTypeObj = record.raw;
+//			    			this.dataTypeLabel.setText('<span class="info">Type:</span><span class="ok"> OK </span>',false);
 			    		}else{
 			    			this.selectedDataType = null;
-			    			this.dataTypeLabel.setText('<span class="info">Select a data type</span><span class="err"> !!!</span>',false);
+			    			this.selectedDataTypeObj = null;
+//			    			this.dataTypeLabel.setText('<span class="info">Select a data type</span><span class="err"> !!!</span>',false);
 			    		}
 			    		this.validate();
 		    		}
@@ -328,7 +340,8 @@ UploadWidget.prototype.render = function(dataTypes){
 		});
 
 		this.panel = Ext.create('Ext.window.Window', {
-		    title: 'Upload a data file'+' -  <span class="err">ZIP files will be allowed shortly</span>',
+		    title: 'Upload a data file',
+//		    title: 'Upload a data file'+' -  <span class="err">ZIP files will be allowed shortly</span>',
 		    iconCls:'icon-upload',
 		    resizable: false,
 //		    minimizable :true,
@@ -342,7 +355,11 @@ UploadWidget.prototype.render = function(dataTypes){
     				},
 		    items: [pan1,pan2,pan3],
 		    buttonAlign:'right',
-		    buttons : [{text:"Close",handler:function(){_this.panel.destroy();}}, uploadButton],
+		    buttons : [{
+                text:"Close",
+                handler:function(){_this.panel.destroy();}},
+                uploadButton
+            ],
 		    listeners: {
 			       scope: this,
 			       minimize:function(){
@@ -360,6 +377,7 @@ UploadWidget.prototype.render = function(dataTypes){
 
 
 UploadWidget.prototype.createUploadField = function()  {
+
 	this.uploadField = Ext.create('Ext.form.field.File', {
 			id:this.uploadFieldId,
 			xtype: 'filefield',
@@ -367,7 +385,7 @@ UploadWidget.prototype.createUploadField = function()  {
 	        flex:1,
 	        padding:1,
 	        msgTarget: 'side',
-	        emptyText: 'Choose a file',
+	        emptyText: 'form fieldChoose a file',
 	        allowBlank: false,
 	        anchor: '100%',
 	        buttonText: 'Open file...',
@@ -386,11 +404,18 @@ UploadWidget.prototype.validate = function (){
 //	console.log(this.selectedDataType != null);
 //	console.log(this.nameField.getValue() !="");
 //	console.log((this.uploadField.getRawValue()!="" || this.editor.getValue()!=""));
-	
-	if (this.selectedDataType != null /*&& this.nameField.getValue() !=""*/ && (this.uploadField.getRawValue()!="" || this.editor.getValue()!="") ){
+
+    var extensionValid = true;
+    if(this.selectedDataTypeObj.validate != null){
+        extensionValid = this.selectedDataTypeObj.validate(Ext.getCmp(this.uploadFieldId).getValue());
+    }
+
+	if (extensionValid && this.selectedDataType != null /*&& this.nameField.getValue() !=""*/ && (this.uploadField.getRawValue()!="" || this.editor.getValue()!="") ){
 		Ext.getCmp(this.uploadButtonId).enable();
+        this.dataTypeLabel.setText('<span class="info">Type:</span><span class="ok"> OK </span>',false);
 	}else{
 		Ext.getCmp(this.uploadButtonId).disable();
+        this.dataTypeLabel.setText('<span class="info">Type:</span><span class="err"> Not valid </span>',false);
 	}
 };
 
